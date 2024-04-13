@@ -18,31 +18,41 @@
             margin: 0;  
             height: 100%;  
             width: 100%;  
+            background-color: #F4EED4;   
         }  
+
         #header {    
             height: 50px;   
-            background-color: #1CC7AE;   
+            background-color: #F4EED4;   
             text-align: center;    
             line-height: 50px;   
         }    
         #basemapGalleryDiv {    
             height: 100px;   
-            background-color: #1C89C7;   
+            background-color: #F4EED4;   
             overflow: auto;   
             
         }
         .esri-scale-bar {  
             position: absolute;  
-            bottom: 10px; 
-            left: 10px; 
+            bottom: 0px; 
+            left: 0px; 
             z-index: 5;  
         }    
+
+        
     
         main {    
             display: flex;    
             flex-direction: column;    
             height: calc(100% - 50px);   
         }    
+        .esri-search{
+            position: fixed;
+            left: 90px;
+            top: 80px;
+            z-index: 10;
+        }
     </style>  
   
     <script>  
@@ -71,37 +81,46 @@
                 map: map,  
                 container: "viewDiv",  
                 zoom: 3,  
-                center: [115, 38]  
+                center: [115, 40]  
             });  
 
 
 
             const scaleBar = new ScaleBar({
              view: view,
-             unit: "imperial"
+             style:"ruler",
+             unit: "metric"
+            
              });
              view.ui.add(scaleBar, {
              position: "bottom-left"
              });
 
             var legend = new Legend({  
-             view: view  
+             view: view,
+             layerInfos: [{
+                layer:featureLayer,
+                title:"2020年黄河流域城镇化率"
+             }]
              });  
-             view.ui.add(legend, "top-right");
+             view.ui.add(legend, "bottom-right");
 
             var search = new Search({  
-             view: view  
+             view: view , 
+             
              });  
              view.ui.add(search, "top-left"); 
-
+             var coordinateConversion = new CoordinateConversion({
+             view: view
+             
+             });
+            view.ui.add(coordinateConversion, "top-right");
             var layerList = new LayerList({  
              view: view  
              });  
-             view.ui.add(layerList, "bottom-right");
-             var coordinateConversion = new CoordinateConversion({
-        view: view
-    });
-    view.ui.add(coordinateConversion, "bottom-right");
+             view.ui.add(layerList, "top-right");
+
+           
 
             var basemapGallery = new BasemapGallery({    
                 view: view,    
@@ -121,10 +140,13 @@
 </head>  
   
 <body>  
-    <header id="header">This is a Map</header>    
+    <header id="header"><h1>2020年黄河流域城镇化率</h1></header>    
     <main>    
         <div id="viewDiv"></div>  
-        <div id="basemapGalleryDiv"></div>
+        <div id="basemapGalleryDiv">
+
+        </div>
+        
     </main>    
 </body>  
 </html>
